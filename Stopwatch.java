@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.time.*;
 
 public class Stopwatch implements MoveableShape {
@@ -66,7 +67,12 @@ public class Stopwatch implements MoveableShape {
 
     @Override
     public void draw(Graphics2D g2) {
-        //create all the elements
+        Dial minDial;
+        Dial secDial;
+
+        Color minColor = minDial.getColor();
+
+        //create two lines
 
 
         //g2.draw(<each element>)
