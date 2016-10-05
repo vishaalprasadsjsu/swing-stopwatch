@@ -91,10 +91,31 @@ public class Dial implements Icon {
             }
         }
 
-        //draw the number labels
-//        for(int deg = 0; deg < 360; deg += 30){
-//
-//        }
+//        draw the number labels
+        for (int i = 0; i < 12; i++) {
+            int deg = i * 30 - 90;
+
+            double angle = Math.toRadians(deg); //angle in radians
+            double cosine = Math.cos(angle);
+            double sine = Math.sin(angle);
+
+            // (Bx, By) represents where we want to print the label
+            Bx = (0.78 * radius * cosine) + Ax;
+            By = (0.78 * radius * sine) + Ay;
+
+            JLabel label = new JLabel();
+            label.setText(Integer.toString(i * 5));
+            label.setFont(g2.getFont());
+//            label.setHorizontalAlignment(JLabel.CENTER);
+
+            Dimension dim = label.getPreferredSize();
+            Rectangle2D r = new Rectangle2D.Double(Bx, By, dim.getWidth(), dim.getHeight());
+
+            label.setBounds((int) Bx, (int) By, (int) r.getWidth(), (int) r.getHeight());
+            g2.translate(r.getX(), r.getY());
+            label.paint(g2);
+            g2.translate(-r.getX(), -r.getY());
+        }
 
     }
 
