@@ -7,13 +7,15 @@ public class Dial implements Icon {
     private int size;
     private boolean threeLevels;
     private Color color;
-    private int angleDeg;
+
+    //location of this dial, set when draw() is called
+    private int x;
+    private int y;
 
     public Dial(int size, boolean threeLevels, Color color) {
         this.size = size;
         this.threeLevels = threeLevels;
         this.color = color;
-        this.angleDeg = 0;
     }
 
     public Color getColor() {
@@ -33,12 +35,15 @@ public class Dial implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
 
+        this.x = x;
+        this.y = y;
+
         double radius = size / 2.0d;
 
         // (Ax, Ay) represents the center of the circle
         // the ticks are NOT drawn from this point
-        double Ax = size / 2.0d;
-        double Ay = size / 2.0d;
+        double Ax = x + size / 2.0d;
+        double Ay = y + size / 2.0d;
 
         /*
             Represents the outer endpoint of each tick (the tick ends here)
@@ -91,27 +96,26 @@ public class Dial implements Icon {
 //
 //        }
 
-        this.setAngle(-30, g2);
-
     }
 
     /**
-     * @param angle in DEGREES where 0 is RIGHT, 90 is DOWN (30 mark)
+     * @param angle in DEGREES where 0 is RIGHT, 90 is DOWN
+     * @param g2    Graphics2D reference used for drawing
      */
-    public void setAngle(double angleDeg, Graphics2D g2){
+    public void setAngle(double angleDeg, Graphics2D g2) {
 
         double angleRad = Math.toRadians(angleDeg);
 
         double radius = size / 2.0d;
-        double Ax = size / 2.0d;
-        double Ay = size / 2.0d;
+        double Ax = x + size / 2.0d;
+        double Ay = y + size / 2.0d;
 
         double Bx, By; //represents the endpoint of the arrow
         Bx = 0.95 * radius * Math.cos(angleRad) + Ax;
         By = 0.95 * radius * Math.sin(angleRad) + Ay;
 
         final double ARROW_ANGLE = Math.PI / 8;
-        final double ARROW_LENGTH = radius * 0.09d; //should depend on size
+        final double ARROW_LENGTH = radius * 0.08d; //should depend on size
 
         double x1 = Bx - ARROW_LENGTH * Math.cos(angleRad + ARROW_ANGLE);
         double y1 = By - ARROW_LENGTH * Math.sin(angleRad + ARROW_ANGLE);
@@ -119,12 +123,11 @@ public class Dial implements Icon {
         double y2 = By - ARROW_LENGTH * Math.sin(angleRad - ARROW_ANGLE);
 
         g2.setColor(this.color);
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke(1.4f));
         g2.draw(new Line2D.Double(Ax, Ay, Bx, By));
         g2.draw(new Line2D.Double(Bx, By, x1, y1));
         g2.draw(new Line2D.Double(Bx, By, x2, y2));
 //        g2.draw(new Line2D.Double(x1, y1, x2, y2));
-
 
 
     }

@@ -7,82 +7,87 @@ public class Stopwatch implements MoveableShape {
     private int y;
     private int radius;
     private boolean running;
-    private boolean frozen;
-    private Instant startTime;
-    private long pauseDuration;
+    private boolean frozenDisp;
+    private Instant startInstant;
+    private Instant pauseInstant;
+    private long pausedMillis;
+    private long totalMillis;
 
-    private int currentMins;
-    private long currentSecs;
+    private Dial secDial;
+    private Dial minDial;
 
-    public Stopwatch(int x, int y, int radius) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.running = false;
-        this.frozen = false;
-        this.startTime = null;
-    }
+    private double secsDisp;
+    private double minsDisp;
 
     public Stopwatch(int radius) {
-        this(0, 0, radius);
+        this.radius = radius;
+        this.running = false;
+        this.frozenDisp = false;
+        this.startInstant = null;
+
+        this.secDial = new Dial(radius * 2, true, Color.BLACK);
+        this.minDial = new Dial((int) (radius * 0.8), false, Color.BLACK);
+    }
 
     public void topButtonPressed() {
-        if (startTime == null) //starting from a reset state
-            startTime = Instant.now();
-
-        if (running) {
-
+        if (startInstant == null) //starting from a reset state
+            startInstant = Instant.now();
+        else if (running) //running, we need to pause
+            this.pauseInstant = Instant.now();
+        else if (!running) { //paused, now resuming
+            pausedMillis += Duration.between(pauseInstant, Instant.now()).toMillis();
+            pauseInstant = null;
         }
 
         this.running = !this.running;
     }
 
     public void secondButtonPressed() {
-        if (this.running && this.frozen)
-            this.frozen = false;
+        if (this.running && this.frozenDisp)
+            this.frozenDisp = false;
 
-        else if (this.running && !this.frozen)
-            this.frozen = true;
+        else if (this.running && !this.frozenDisp)
+            this.frozenDisp = true;
 
-        else if (!this.running) { //not running --> RESET
+        else if (!this.running) {  // RESET
             this.running = false;
-            this.frozen = false;
-            this.startTime = null;
+            this.frozenDisp = false;
+            this.startInstant = null;
+            this.pausedMillis = 0;
+            this.totalMillis = 0;
+            this.secsDisp = 0;
+            this.minsDisp = 0;
         }
     }
 
     @Override
     public void move() {
-        if (running) {
+        if (running && !frozenDisp) {
             //total number of seconds
-            this.currentSecs = Duration.between(startTime, Instant.now()).getSeconds();
+            this.totalMillis = Duration.between(startInstant, Instant.now()).toMillis();
 
-            //total number of minutes
-            this.currentMins = (int) (this.currentSecs / 60);
-            this.currentMins %= 60; //just in case it runs for >1 hour
+            long runningMillis = totalMillis - pausedMillis;
+            double secs = (double) runningMillis / 1000.0d;
+            double mins = ((secs / 60.0d) % 60);
+            secs %= 60; //mins and secs are now in range 0-60
 
-            //just seconds, (between 0-60)
-            this.currentSecs %= 60;
-        } else {
-            
-
+            this.minsDisp = mins;
+            this.secsDisp = secs % 60;
         }
-
 
         //else: NOT running --> do nothing
     }
 
     @Override
     public void draw(Graphics2D g2) {
-//        Dial minDial;
-//        Dial secDial;
 
-        if (running)
-            System.out.println(this.currentMins + ":" + this.currentSecs);
+        secDial.paintIcon(null, g2, 0, 0);
+        secDial.setAngle(this.secsDisp * 6 - 90, g2);
+
+        minDial.paintIcon(null, g2, (int) (radius * 0.6d), radius / 3);
+        minDial.setAngle(this.minsDisp * 6 - 90, g2);
 
     }
-
-    //for MoveableShape implement METHODS: draw() and move()
 
 
 }
