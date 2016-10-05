@@ -4,11 +4,15 @@ import java.time.*;
 public class Stopwatch implements MoveableShape {
 
     private int x;
-    private int y
+    private int y;
     private int radius;
     private boolean running;
     private boolean frozen;
     private Instant startTime;
+    private long pauseDuration;
+
+    private int currentMins;
+    private long currentSecs;
 
     public Stopwatch(int x, int y, int radius) {
         this.x = x;
@@ -20,15 +24,17 @@ public class Stopwatch implements MoveableShape {
     }
 
     public Stopwatch(int radius) {
-        this(0, 0, radius); //// TODO: 10/3/16 assume x=0 and y=0?
-    }
+        this(0, 0, radius);
 
     public void topButtonPressed() {
         if (startTime == null) //starting from a reset state
             startTime = Instant.now();
 
-        this.running = !this.running;
+        if (running) {
 
+        }
+
+        this.running = !this.running;
     }
 
     public void secondButtonPressed() {
@@ -48,34 +54,31 @@ public class Stopwatch implements MoveableShape {
     @Override
     public void move() {
         if (running) {
-            int minutes; //the number of minutes to display (0-60)
-            int seconds; //number of seconds to display (0-60)
-
             //total number of seconds
-            seconds = Duration.between(startTime, Instant.now());
+            this.currentSecs = Duration.between(startTime, Instant.now()).getSeconds();
 
             //total number of minutes
-            minutes = seconds / 60;
-            minutes %= 60; //just in case it runs for >1 hour
+            this.currentMins = (int) (this.currentSecs / 60);
+            this.currentMins %= 60; //just in case it runs for >1 hour
 
             //just seconds, (between 0-60)
-            seconds %= 60;
+            this.currentSecs %= 60;
+        } else {
+            
+
         }
+
 
         //else: NOT running --> do nothing
     }
 
     @Override
     public void draw(Graphics2D g2) {
-        Dial minDial;
-        Dial secDial;
+//        Dial minDial;
+//        Dial secDial;
 
-        Color minColor = minDial.getColor();
-
-        //create two lines
-
-
-        //g2.draw(<each element>)
+        if (running)
+            System.out.println(this.currentMins + ":" + this.currentSecs);
 
     }
 
