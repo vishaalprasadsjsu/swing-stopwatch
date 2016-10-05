@@ -67,8 +67,8 @@ public class Dial implements Icon {
             By = (radius * sine) + Ay;
 
             if (deg % 30 == 0) { //LEVEL 1 ticks
-                Cx = (0.80 * radius * cosine) + Ax;
-                Cy = (0.80 * radius * sine) + Ay;
+                Cx = (0.82 * radius * cosine) + Ax;
+                Cy = (0.82 * radius * sine) + Ay;
                 g2.draw(new Line2D.Double(Cx, Cy, Bx, By));
             } else if (deg % 6 == 0) { //LEVEL 2 ticks
                 Cx = (0.89 * radius * cosine) + Ax;
@@ -102,22 +102,31 @@ public class Dial implements Icon {
             double cosine = Math.cos(angle);
             double sine = Math.sin(angle);
 
-            // (Bx, By) represents where we want to print the label
-            Bx = (0.75 * radius * cosine) + Ax;
-            By = (0.75 * radius * sine) + Ay;
-
             MultiLineString mMLS = new MultiLineString();
             mMLS.setText(Integer.toString(i * 5));
 
-            Rectangle2D bounds = mMLS.getBounds(g2);
 
             if(this.threeLevels) {
+                // (Bx, By) represents where we want to print the label
+                Bx = (0.75 * radius * cosine) + Ax;
+                By = (0.75 * radius * sine) + Ay;
+
+                mMLS.setSize(MultiLineString.NORMAL);
+                Rectangle2D bounds = mMLS.getBounds(g2);
                 int wd = (int) bounds.getWidth();
                 int ht = (int) bounds.getHeight();
                 mMLS.draw(g2, new Rectangle2D.Double(Bx - (wd * 0.5d), By - (ht * 0.5d), wd, ht));
             } else {
-                
+                // (Bx, By) represents where we want to print the label
+                Bx = (0.68 * radius * cosine) + Ax;
+                By = (0.68 * radius * sine) + Ay;
 
+                mMLS.setSize(MultiLineString.SMALL);
+                Rectangle2D bounds = mMLS.getBounds(g2);
+
+                int wd = (int) bounds.getWidth();
+                int ht = (int) bounds.getHeight();
+                mMLS.draw(g2, new Rectangle2D.Double(Bx - (wd * 0.5d), By - (ht * 0.5d), wd, ht));
             }
 
         }
