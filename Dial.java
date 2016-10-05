@@ -7,6 +7,7 @@ public class Dial implements Icon {
     private int size;
     private boolean threeLevels;
     private Color color;
+    private static final Color TICK_COLOR = Color.BLACK;
 
     //location of this dial, set when draw() is called
     private int x;
@@ -53,6 +54,8 @@ public class Dial implements Icon {
 
         // Represents the inner endpoint of each tick (the tick starts here)
         double Cx = 0, Cy = 0;
+
+        g2.setColor(TICK_COLOR);
 
         //LEVEL 1 & 2 ticks
         for (int deg = 0; deg < 360; deg += 6) {
@@ -103,18 +106,27 @@ public class Dial implements Icon {
             Bx = (0.78 * radius * cosine) + Ax;
             By = (0.78 * radius * sine) + Ay;
 
-            JLabel label = new JLabel();
-            label.setText(Integer.toString(i * 5));
-            label.setFont(g2.getFont());
+
+//            Cx = Bx - d;
+//            Cy = By - d;
+//            int width = d * 2;
+
+//            JLabel label = new JLabel();
+//            label.setText(Integer.toString(i * 5));
+//            label.setFont(g2.getFont());
 //            label.setHorizontalAlignment(JLabel.CENTER);
+//
+//            Dimension dim = label.getPreferredSize();
+//            Rectangle2D r = new Rectangle2D.Double(Bx, By, dim.getWidth(), dim.getHeight());
 
-            Dimension dim = label.getPreferredSize();
-            Rectangle2D r = new Rectangle2D.Double(Bx, By, dim.getWidth(), dim.getHeight());
+//            label.setBounds((int) Bx, (int) By, (int) r.getWidth(), (int) r.getHeight());
+//            g2.translate(r.getX(), r.getY());
+//            label.paint(g2);
+//            g2.translate(-r.getX(), -r.getY());
 
-            label.setBounds((int) Bx, (int) By, (int) r.getWidth(), (int) r.getHeight());
-            g2.translate(r.getX(), r.getY());
-            label.paint(g2);
-            g2.translate(-r.getX(), -r.getY());
+//            this.drawCenteredString(g2, Integer.toString(i*5), new Rectangle2D.Double
+//                    (Cx, Cy, width, width), g2.getFont());
+
         }
 
     }
@@ -150,6 +162,20 @@ public class Dial implements Icon {
         g2.draw(new Line2D.Double(Bx, By, x2, y2));
 //        g2.draw(new Line2D.Double(x1, y1, x2, y2));
 
+    }
 
+    public void drawCenteredString(Graphics g, String text, Rectangle2D rect, Font font) {
+        // Get the FontMetrics
+        FontMetrics metrics = g.getFontMetrics(font);
+        // Determine the X coordinate for the text
+        int x = ((int) rect.getWidth() - metrics.stringWidth(text)) / 2;
+        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+        int y = (((int) rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
+        // Set the font
+        g.setFont(font);
+        // Draw the String
+        g.drawString(text, x, y);
+        // Dispose the Graphics
+        g.dispose();
     }
 }

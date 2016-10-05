@@ -3,8 +3,6 @@ import java.time.*;
 
 public class Stopwatch implements MoveableShape {
 
-    private int x;
-    private int y;
     private int radius;
     private boolean running;
     private boolean frozenDisp;
@@ -25,8 +23,8 @@ public class Stopwatch implements MoveableShape {
         this.frozenDisp = false;
         this.startInstant = null;
 
-        this.secDial = new Dial(radius * 2, true, Color.BLACK);
-        this.minDial = new Dial((int) (radius * 0.8), false, Color.BLACK);
+        this.secDial = new Dial(radius * 2, true, Color.RED);
+        this.minDial = new Dial((int) (radius * 0.8), false, Color.BLUE);
     }
 
     public void topButtonPressed() {
