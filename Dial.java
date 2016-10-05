@@ -103,29 +103,22 @@ public class Dial implements Icon {
             double sine = Math.sin(angle);
 
             // (Bx, By) represents where we want to print the label
-            Bx = (0.78 * radius * cosine) + Ax;
-            By = (0.78 * radius * sine) + Ay;
+            Bx = (0.75 * radius * cosine) + Ax;
+            By = (0.75 * radius * sine) + Ay;
 
+            MultiLineString mMLS = new MultiLineString();
+            mMLS.setText(Integer.toString(i * 5));
 
-//            Cx = Bx - d;
-//            Cy = By - d;
-//            int width = d * 2;
+            Rectangle2D bounds = mMLS.getBounds(g2);
 
-//            JLabel label = new JLabel();
-//            label.setText(Integer.toString(i * 5));
-//            label.setFont(g2.getFont());
-//            label.setHorizontalAlignment(JLabel.CENTER);
-//
-//            Dimension dim = label.getPreferredSize();
-//            Rectangle2D r = new Rectangle2D.Double(Bx, By, dim.getWidth(), dim.getHeight());
+            if(this.threeLevels) {
+                int wd = (int) bounds.getWidth();
+                int ht = (int) bounds.getHeight();
+                mMLS.draw(g2, new Rectangle2D.Double(Bx - (wd * 0.5d), By - (ht * 0.5d), wd, ht));
+            } else {
+                
 
-//            label.setBounds((int) Bx, (int) By, (int) r.getWidth(), (int) r.getHeight());
-//            g2.translate(r.getX(), r.getY());
-//            label.paint(g2);
-//            g2.translate(-r.getX(), -r.getY());
-
-//            this.drawCenteredString(g2, Integer.toString(i*5), new Rectangle2D.Double
-//                    (Cx, Cy, width, width), g2.getFont());
+            }
 
         }
 
@@ -147,13 +140,18 @@ public class Dial implements Icon {
         Bx = 0.95 * radius * Math.cos(angleRad) + Ax;
         By = 0.95 * radius * Math.sin(angleRad) + Ay;
 
-        final double ARROW_ANGLE = Math.PI / 8;
-        final double ARROW_LENGTH = radius * 0.08d; //should depend on size
+        /*
+            The following logic of code that is used to draw the arrows
+            is inspired by the work of Cay Horstmann in the program
+            Violet - A program for editing UML diagrams
+         */
+        final double ARROW_TIP_ANGLE = Math.PI / 8;
+        final double ARROW_TIP_LENGTH = radius * 0.08d; //should depend on size
 
-        double x1 = Bx - ARROW_LENGTH * Math.cos(angleRad + ARROW_ANGLE);
-        double y1 = By - ARROW_LENGTH * Math.sin(angleRad + ARROW_ANGLE);
-        double x2 = Bx - ARROW_LENGTH * Math.cos(angleRad - ARROW_ANGLE);
-        double y2 = By - ARROW_LENGTH * Math.sin(angleRad - ARROW_ANGLE);
+        double x1 = Bx - ARROW_TIP_LENGTH * Math.cos(angleRad + ARROW_TIP_ANGLE);
+        double y1 = By - ARROW_TIP_LENGTH * Math.sin(angleRad + ARROW_TIP_ANGLE);
+        double x2 = Bx - ARROW_TIP_LENGTH * Math.cos(angleRad - ARROW_TIP_ANGLE);
+        double y2 = By - ARROW_TIP_LENGTH * Math.sin(angleRad - ARROW_TIP_ANGLE);
 
         g2.setColor(this.color);
         g2.setStroke(new BasicStroke(1.4f));
