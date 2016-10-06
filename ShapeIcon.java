@@ -10,8 +10,8 @@ public class ShapeIcon implements Icon
    /**
     * Creates a new ShapeIcon with the given parameters
     * @param shape a MoveableShape to be contained in this ShapeIcon
-    * @param width
-    * @param height
+    * @param width the desired width
+    * @param height the desired height
     */
    public ShapeIcon(MoveableShape shape,
       int width, int height)

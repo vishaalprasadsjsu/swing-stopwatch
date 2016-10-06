@@ -163,8 +163,8 @@ public class Dial implements Icon {
     /**
      * Draws the Dial's hand to represent the current Degree
      *
-     * @param angle in DEGREES where 0 is RIGHT, 90 is DOWN
-     * @param g2    Graphics2D reference used for drawing
+     * @param angleDeg in DEGREES where 0 is RIGHT, 90 is DOWN
+     * @param g2       Graphics2D reference used for drawing
      */
     public void setAngle(double angleDeg, Graphics2D g2) {
 
