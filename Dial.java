@@ -123,7 +123,7 @@ public class Dial implements Icon {
             }
         }
 
-//        draw the number labels
+        // draw the number labels
         for (int i = 0; i < 12; i++) {
             int deg = i * 30 - 90;
 
@@ -134,13 +134,12 @@ public class Dial implements Icon {
             MultiLineString mMLS = new MultiLineString();
             mMLS.setText(Integer.toString(i * 5));
 
-
             if (this.threeLevels) {
                 // (Bx, By) represents where we want to print the label
                 Bx = (0.75 * radius * cosine) + Ax;
                 By = (0.75 * radius * sine) + Ay;
 
-                mMLS.setSize(MultiLineString.NORMAL);
+                mMLS.setSize(MultiLineString.LARGE);
                 Rectangle2D bounds = mMLS.getBounds(g2);
                 int wd = (int) bounds.getWidth();
                 int ht = (int) bounds.getHeight();
