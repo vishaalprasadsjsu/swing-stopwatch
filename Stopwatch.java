@@ -106,11 +106,10 @@ public class Stopwatch implements MoveableShape {
      */
     @Override
     public void draw(Graphics2D g2) {
-
         secDial.paintIcon(null, g2, 0, 0);
         secDial.setAngle(this.secsDisp * 6 - 90, g2);
 
-        minDial.paintIcon(null, g2, (int) (radius * 0.6d), radius / 3);
+        minDial.paintIcon(null, g2, (int) (radius * 0.6d), (int) (radius * 0.4d));
         minDial.setAngle(this.minsDisp * 6 - 90, g2);
     }
 }

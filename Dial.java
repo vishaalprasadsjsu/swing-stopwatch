@@ -136,8 +136,8 @@ public class Dial implements Icon {
 
             if (this.threeLevels) {
                 // (Bx, By) represents where we want to print the label
-                Bx = (0.75 * radius * cosine) + Ax;
-                By = (0.75 * radius * sine) + Ay;
+                Bx = (0.74 * radius * cosine) + Ax;
+                By = (0.74 * radius * sine) + Ay;
 
                 mMLS.setSize(MultiLineString.LARGE);
                 Rectangle2D bounds = mMLS.getBounds(g2);
@@ -146,8 +146,8 @@ public class Dial implements Icon {
                 mMLS.draw(g2, new Rectangle2D.Double(Bx - (wd * 0.5d), By - (ht * 0.5d), wd, ht));
             } else {
                 // (Bx, By) represents where we want to print the label
-                Bx = (0.68 * radius * cosine) + Ax;
-                By = (0.68 * radius * sine) + Ay;
+                Bx = (0.67 * radius * cosine) + Ax;
+                By = (0.67 * radius * sine) + Ay;
 
                 mMLS.setSize(MultiLineString.SMALL);
                 Rectangle2D bounds = mMLS.getBounds(g2);
