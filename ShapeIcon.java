@@ -7,6 +7,12 @@ import javax.swing.*;
 */
 public class ShapeIcon implements Icon
 {
+   /**
+    * Creates a new ShapeIcon with the given parameters
+    * @param shape a MoveableShape to be contained in this ShapeIcon
+    * @param width
+    * @param height
+    */
    public ShapeIcon(MoveableShape shape,
       int width, int height)
    {
@@ -14,17 +20,30 @@ public class ShapeIcon implements Icon
       this.width = width;
       this.height = height;
    }
-   
+
+   /**
+    * @return this ShapeIcon's width
+    */
    public int getIconWidth()
    {
       return width;
    }
 
+   /**
+    * @return this ShapeIcon's height
+    */
    public int getIconHeight()
    {
       return height;
    }
 
+   /**
+    * Paint this ShapeIcon with the given parameters
+    * @param c Component for painting
+    * @param g Graphics for painting
+    * @param x X-coordinate in which to paint this ShapeIcon
+    * @param y Y-coordinate in which to paint this ShapeIcon
+    */
    public void paintIcon(Component c, Graphics g, int x, int y)
    {
       Graphics2D g2 = (Graphics2D) g;

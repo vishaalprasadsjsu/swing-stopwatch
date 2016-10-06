@@ -2,6 +2,10 @@ import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
+/**
+ * A Dial to be used in a Stopwatch
+ * Consists of a hand of a custom color
+ */
 public class Dial implements Icon {
 
     private int size;
@@ -13,26 +17,51 @@ public class Dial implements Icon {
     private int x;
     private int y;
 
+    /**
+     * Creates a dial of the given parameters
+     *
+     * @param size        DIAMETER of the Dial
+     * @param threeLevels whether to paint the third level of ticks
+     * @param color       of the hand
+     */
     public Dial(int size, boolean threeLevels, Color color) {
         this.size = size;
         this.threeLevels = threeLevels;
         this.color = color;
     }
 
+    /**
+     * @return the color of this Dial's hands
+     */
     public Color getColor() {
         return this.color;
     }
 
+    /**
+     * @return the height of this Dial
+     */
     public int getIconHeight() {
         return this.size;
     }
 
+    /**
+     * @return the width of this Dial
+     */
     public int getIconWidth() {
         return this.size;
     }
 
     //x,y is 0,0 for larger one
     //x,y is drawn in the middle for the smaller one
+
+    /**
+     * Paints this Dial with the given parameters
+     *
+     * @param c null okay
+     * @param g Graphics for painting
+     * @param x TOP LEFT X-coordinate location of the icon
+     * @param y TOP LEFT Y-coordinate location of the icon
+     */
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
 
@@ -106,7 +135,7 @@ public class Dial implements Icon {
             mMLS.setText(Integer.toString(i * 5));
 
 
-            if(this.threeLevels) {
+            if (this.threeLevels) {
                 // (Bx, By) represents where we want to print the label
                 Bx = (0.75 * radius * cosine) + Ax;
                 By = (0.75 * radius * sine) + Ay;
@@ -128,12 +157,12 @@ public class Dial implements Icon {
                 int ht = (int) bounds.getHeight();
                 mMLS.draw(g2, new Rectangle2D.Double(Bx - (wd * 0.5d), By - (ht * 0.5d), wd, ht));
             }
-
         }
-
     }
 
     /**
+     * Draws the Dial's hand to represent the current Degree
+     *
      * @param angle in DEGREES where 0 is RIGHT, 90 is DOWN
      * @param g2    Graphics2D reference used for drawing
      */
@@ -167,22 +196,5 @@ public class Dial implements Icon {
         g2.draw(new Line2D.Double(Ax, Ay, Bx, By));
         g2.draw(new Line2D.Double(Bx, By, x1, y1));
         g2.draw(new Line2D.Double(Bx, By, x2, y2));
-//        g2.draw(new Line2D.Double(x1, y1, x2, y2));
-
-    }
-
-    public void drawCenteredString(Graphics g, String text, Rectangle2D rect, Font font) {
-        // Get the FontMetrics
-        FontMetrics metrics = g.getFontMetrics(font);
-        // Determine the X coordinate for the text
-        int x = ((int) rect.getWidth() - metrics.stringWidth(text)) / 2;
-        // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
-        int y = (((int) rect.getHeight() - metrics.getHeight()) / 2) + metrics.getAscent();
-        // Set the font
-        g.setFont(font);
-        // Draw the String
-        g.drawString(text, x, y);
-        // Dispose the Graphics
-        g.dispose();
     }
 }

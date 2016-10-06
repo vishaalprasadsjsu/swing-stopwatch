@@ -37,97 +37,133 @@ import java.util.StringTokenizer;
 import javax.swing.JLabel;
 
 /**
- A string that can extend over multiple lines.
+ * A string that can extend over multiple lines.
  */
-public class MultiLineString implements Cloneable, Serializable
-{
+public class MultiLineString implements Cloneable, Serializable {
     /**
-     Constructs an empty, centered, normal size multiline
-     string that is not underlined.
+     * Constructs an empty, centered, normal size multiline
+     * string that is not underlined.
      */
-    public MultiLineString()
-    {
+    public MultiLineString() {
         text = "";
         justification = CENTER;
         size = NORMAL;
         underlined = false;
     }
-    /**
-     Sets the value of the text property.
-     @param newValue the text of the multiline string
-     */
-    public void setText(String newValue) { text = newValue; setLabelText(); }
-    /**
-     Gets the value of the text property.
-     @return the text of the multiline string
-     */
-    public String getText() { return text; }
-    /**
-     Sets the value of the justification property.
-     @param newValue the justification, one of LEFT, CENTER,
-     RIGHT
-     */
-    public void setJustification(int newValue) { justification = newValue; setLabelText(); }
-    /**
-     Gets the value of the justification property.
-     @return the justification, one of LEFT, CENTER,
-     RIGHT
-     */
-    public int getJustification() { return justification; }
-    /**
-     Gets the value of the underlined property.
-     @return true if the text is underlined
-     */
-    public boolean isUnderlined() { return underlined; }
-    /**
-     Sets the value of the underlined property.
-     @param newValue true to underline the text
-     */
-    public void setUnderlined(boolean newValue) { underlined = newValue; setLabelText(); }
-    /**
-     Sets the value of the size property.
-     @param newValue the size, one of SMALL, NORMAL, LARGE
-     */
-    public void setSize(int newValue) { size = newValue; setLabelText(); }
-    /**
-     Gets the value of the size property.
-     @return the size, one of SMALL, NORMAL, LARGE
-     */
-    public int getSize() { return size; }
 
-    public String toString()
-    {
+    /**
+     * Sets the value of the text property.
+     *
+     * @param newValue the text of the multiline string
+     */
+    public void setText(String newValue) {
+        text = newValue;
+        setLabelText();
+    }
+
+    /**
+     * Gets the value of the text property.
+     *
+     * @return the text of the multiline string
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * Sets the value of the justification property.
+     *
+     * @param newValue the justification, one of LEFT, CENTER,
+     *                 RIGHT
+     */
+    public void setJustification(int newValue) {
+        justification = newValue;
+        setLabelText();
+    }
+
+    /**
+     * Gets the value of the justification property.
+     *
+     * @return the justification, one of LEFT, CENTER,
+     * RIGHT
+     */
+    public int getJustification() {
+        return justification;
+    }
+
+    /**
+     * Gets the value of the underlined property.
+     *
+     * @return true if the text is underlined
+     */
+    public boolean isUnderlined() {
+        return underlined;
+    }
+
+    /**
+     * Sets the value of the underlined property.
+     *
+     * @param newValue true to underline the text
+     */
+    public void setUnderlined(boolean newValue) {
+        underlined = newValue;
+        setLabelText();
+    }
+
+    /**
+     * Sets the value of the size property.
+     *
+     * @param newValue the size, one of SMALL, NORMAL, LARGE
+     */
+    public void setSize(int newValue) {
+        size = newValue;
+        setLabelText();
+    }
+
+    /**
+     * Gets the value of the size property.
+     *
+     * @return the size, one of SMALL, NORMAL, LARGE
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * @return a toString representation of this object
+     */
+    public String toString() {
         return text.replace('\n', '|');
     }
 
-    private void setLabelText()
-    {
+    /**
+     * Internal method for setting the text with the way
+     * the parameters are currently set
+     */
+    private void setLabelText() {
         StringBuffer prefix = new StringBuffer();
         StringBuffer suffix = new StringBuffer();
         StringBuffer htmlText = new StringBuffer();
         prefix.append("&nbsp;");
         suffix.insert(0, "&nbsp;");
-        if (underlined)
-        {
+        if (underlined) {
             prefix.append("<u>");
             suffix.insert(0, "</u>");
         }
-        if (size == LARGE)
-        {
+        if (size == LARGE) {
             prefix.append("<font size=\"+1\">");
             suffix.insert(0, "</font>");
         }
-        if (size == SMALL)
-        {
+        if (size == SMALL) {
             prefix.append("<font size=\"-2\">");
             suffix.insert(0, "</font>");
         }
         htmlText.append("<html>");
         StringTokenizer tokenizer = new StringTokenizer(text, "\n");
         boolean first = true;
-        while (tokenizer.hasMoreTokens())
-        {
-            if (first) first = false; else htmlText.append("<br>");
+        while (tokenizer.hasMoreTokens()) {
+            if (first) first = false;
+            else htmlText.append("<br>");
             htmlText.append(prefix);
             htmlText.append(tokenizer.nextToken());
             htmlText.append(suffix);
@@ -136,18 +172,16 @@ public class MultiLineString implements Cloneable, Serializable
 
         // replace any < that are not followed by {u, i, b, tt, font, br} with &lt;
 
-        List dontReplace = Arrays.asList(new String[] { "u", "i", "b", "tt", "font", "br" });
+        List dontReplace = Arrays.asList(new String[]{"u", "i", "b", "tt", "font", "br"});
 
         int ltpos = 0;
-        while (ltpos != -1)
-        {
+        while (ltpos != -1) {
             ltpos = htmlText.indexOf("<", ltpos + 1);
-            if (ltpos != -1 && !(ltpos + 1 < htmlText.length() && htmlText.charAt(ltpos + 1) == '/'))
-            {
+            if (ltpos != -1 && !(ltpos + 1 < htmlText.length() && htmlText.charAt(ltpos + 1) == '/')) {
                 int end = ltpos + 1;
                 while (end < htmlText.length() && Character.isLetter(htmlText.charAt(end))) end++;
                 if (!dontReplace.contains(htmlText.substring(ltpos + 1, end)))
-                    htmlText.replace(ltpos, ltpos+1, "&lt;");
+                    htmlText.replace(ltpos, ltpos + 1, "&lt;");
             }
         }
 
@@ -158,12 +192,12 @@ public class MultiLineString implements Cloneable, Serializable
     }
 
     /**
-     Gets the bounding rectangle for this multiline string.
-     @param g2 the graphics context
-     @return the bounding rectangle (with top left corner (0,0))
+     * Gets the bounding rectangle for this multiline string.
+     *
+     * @param g2 the graphics context
+     * @return the bounding rectangle (with top left corner (0,0))
      */
-    public Rectangle2D getBounds(Graphics2D g2)
-    {
+    public Rectangle2D getBounds(Graphics2D g2) {
         if (text.length() == 0) return new Rectangle2D.Double();
         // setLabelText();
         Dimension dim = label.getPreferredSize();
@@ -171,12 +205,12 @@ public class MultiLineString implements Cloneable, Serializable
     }
 
     /**
-     Draws this multiline string inside a given rectangle
-     @param g2 the graphics context
-     @param r the rectangle into which to place this multiline string
+     * Draws this multiline string inside a given rectangle
+     *
+     * @param g2 the graphics context
+     * @param r  the rectangle into which to place this multiline string
      */
-    public void draw(Graphics2D g2, Rectangle2D r)
-    {
+    public void draw(Graphics2D g2, Rectangle2D r) {
         // setLabelText();
         label.setFont(g2.getFont());
         label.setBounds(0, 0, (int) r.getWidth(), (int) r.getHeight());
@@ -185,17 +219,16 @@ public class MultiLineString implements Cloneable, Serializable
         g2.translate(-r.getX(), -r.getY());
     }
 
-    public Object clone()
-    {
-        try
-        {
+    /**
+     * @return a new MultiLineString with the same parameters as this
+     */
+    public Object clone() {
+        try {
             MultiLineString cloned = (MultiLineString) super.clone();
             cloned.label = new JLabel();
             cloned.setLabelText();
             return cloned;
-        }
-        catch (CloneNotSupportedException exception)
-        {
+        } catch (CloneNotSupportedException exception) {
             return null;
         }
     }
