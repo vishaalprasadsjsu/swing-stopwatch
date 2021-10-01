@@ -18,4 +18,4 @@ The "Top" and "Second" buttons simulate hitting actual buttons on a stopwatch
 
 Top – Start/pause/resume
 
-Second – Reset (if paused) or Freeze (if running)
+Second – Reset (if paused), freeze (if running), unfreeze (if freezed) 
